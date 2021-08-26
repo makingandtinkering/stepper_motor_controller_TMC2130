@@ -167,28 +167,6 @@ void check_status() {
             Serial.print(axis);
             Serial.println("-axis SPI not connected! Check power and connection.");
         }
-        /*
-        uint8_t ver = steppers[i].version();
-        switch(ver) {
-            case 0:
-            case 0xFF:
-                Serial.print(axis);
-                Serial.println("-axis SPI not connected! Check power and connection.");
-                break;
-            default:
-                Serial.print(axis);
-                Serial.print("-axis SPI OK. ");
-                int ms = steppers[i].microsteps();
-                Serial.print("Microsteps: ");
-                Serial.print(ms);
-                Serial.print(". ");
-                int current = steppers[i].getCurrent();
-                Serial.print("Peak current: ");
-                Serial.print(current);
-                Serial.println(" mA.");
-                break;
-        }
-        */
     }
 }
 
