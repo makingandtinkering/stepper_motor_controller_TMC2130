@@ -31,6 +31,7 @@ TMC2130Stepper steppers[3] = {
 U8GLIB_ST7920_128X64_1X u8g(23, 17, 16);
 
 long stepsTaken[3] = {0, 0, 0};
+unsigned int pulse_delay = 1000;
 
 void instructions() {
 /*    
@@ -44,7 +45,7 @@ void instructions() {
     Serial.println("            <axis> = \"all\", \"X\", \"Y\" or \"Z\".");
     Serial.println("Command: \"ms <axis> <microsteps>\" -- Set <axis> microsteps to <microsteps>. ");
     Serial.println("            <axis> = \"all\", \"X\", \"Y\" or \"Z\".");
-    Serial.println("Command: \"curr <axis> <peak_current>\" -- Set <axis> peak current to <peak_current>. ");
+    Serial.println("Command: \"curr <axis> <peak_current>\" -- Set <axis> peak current to <peak_current> mA. ");
     Serial.println("            <axis> = \"all\", \"X\", \"Y\" or \"Z\".");
     Serial.println("Command: \"move <axis> <steps>\" -- Move <axis> by <steps> steps. ");
     Serial.println("            <axis> = \"X\", \"Y\" or \"Z\".");
@@ -325,7 +326,7 @@ void move_stepper(char* axis, char* steps) {
                     digitalWrite(X_STEP, HIGH);
                     delayMicroseconds(10);
                     digitalWrite(X_STEP, LOW);
-                    delayMicroseconds(10);
+                    delayMicroseconds(10 + pulse_delay);
                     stepsTaken[0] += sign;
                 }
                 digitalWrite(X_EN, HIGH);
@@ -336,7 +337,7 @@ void move_stepper(char* axis, char* steps) {
                     digitalWrite(Y_STEP, HIGH);
                     delayMicroseconds(10);
                     digitalWrite(Y_STEP, LOW);
-                    delayMicroseconds(10);
+                    delayMicroseconds(10 + pulse_delay);
                     stepsTaken[1] += sign;
                 }
                 digitalWrite(Y_EN, HIGH);
@@ -347,7 +348,7 @@ void move_stepper(char* axis, char* steps) {
                     digitalWrite(Z_STEP, HIGH);
                     delayMicroseconds(10);
                     digitalWrite(Z_STEP, LOW);
-                    delayMicroseconds(10);
+                    delayMicroseconds(10 + pulse_delay);
                     stepsTaken[2] += sign;
                 }
                 digitalWrite(Z_EN, HIGH);
