@@ -31,7 +31,7 @@ TMC2130Stepper steppers[3] = {
 U8GLIB_ST7920_128X64_1X u8g(23, 17, 16);
 
 long stepsTaken[3] = {0, 0, 0};
-unsigned int pulse_delay = 1000;
+unsigned int pulse_delay = 1000; // change this to change the speed. Smaller = faster.
 
 void instructions() {
 /*    
@@ -156,6 +156,9 @@ void check_status() {
             Serial.print(axis);
             Serial.print("-axis SPI OK. ");
             int ms = steppers[i].microsteps();
+            if (ms == 0) {
+               ms = 1;
+            }
             Serial.print("Microsteps: ");
             Serial.print(ms);
             Serial.print(". ");
@@ -221,13 +224,16 @@ void change_ms(char* axis, char* ms) {
  */
     int ms_value = atoi(ms);
     bool pow_of_2 = ((ms_value & (ms_value - 1)) == 0);
+    if( ms_value == 1 ) {
+        ms_value = 0;
+    }
     if( (ms_value > 0) && (ms_value <= 256) && pow_of_2 ) {
         if (strcmp(axis, "all") == 0){ 
             for (int i = 0; i < NMOTORS; i++) {
                 steppers[i].microsteps(ms_value);
             }
             Serial.print("All axes set to ");
-            Serial.print(ms_value);
+            Serial.print(ms);
             Serial.println(" microsteps.");
         }
         else if (strlen(axis) == 1) {
@@ -236,7 +242,7 @@ void change_ms(char* axis, char* ms) {
                 steppers[axis_index].microsteps(ms_value);
                 Serial.print(axis);
                 Serial.print("-axis set to ");
-                Serial.print(ms_value);
+                Serial.print(ms);
                 Serial.println(" microsteps.");
             }
             else {
